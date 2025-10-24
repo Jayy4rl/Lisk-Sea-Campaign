@@ -121,6 +121,18 @@ export const Header = () => {
                       setIsDrawerOpen(false);
                     }}
                   >
+                    <li>
+                      <Link href="/">Home</Link>
+                    </li>
+                    <li>
+                      <Link href="/events">Events</Link>
+                    </li>
+                    <li>
+                      <Link href="/debug">Debug Contracts</Link>
+                    </li>
+                    <li>
+                      <Link href="/blockexplorer">Block Explorer</Link>
+                    </li>
                     <HeaderMenuLinks />
                   </ul>
                 </div>
