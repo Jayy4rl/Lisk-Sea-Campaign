@@ -47,28 +47,44 @@ export const AddressInfoDropdown = ({
   return (
     <>
       <details ref={dropdownRef} className="dropdown dropdown-end leading-3">
-        <summary tabIndex={0} className="btn bg-base-100 btn-md shadow-md dropdown-toggle gap-0 !h-auto flex-nowrap">
-          <div className="hidden lg:flex w-5">
-            <BlockieAvatar address={checkSumAddress} size={30} ensImage={ensAvatar} />
-          </div>
-          <span className="ml-2 mr-1">
-            {isENS(displayName) ? displayName : checkSumAddress?.slice(0, 6) + "..." + checkSumAddress?.slice(-4)}
+        {/* Dropdown Toggle Button */}
+        <summary
+          tabIndex={0}
+          className="relative group px-4 py-2 bg-black/40 hover:bg-sky-500/20 border border-sky-500/30 hover:border-sky-400/50 rounded-full font-medium text-sm transition-all duration-300 flex items-center gap-2 cursor-pointer hover:shadow-lg hover:shadow-sky-500/20"
+        >
+          {/* Glow effect on hover */}
+          <div className="absolute inset-0 bg-sky-500/0 group-hover:bg-sky-500/10 rounded-full blur transition-all duration-300"></div>
+
+          {/* Button content */}
+          <span className="relative flex items-center gap-2">
+            {/* Avatar */}
+            <div className="hidden lg:flex w-8 h-8 rounded-full overflow-hidden border-2 border-sky-500/30 group-hover:border-sky-400/50 transition-colors">
+              <BlockieAvatar address={checkSumAddress} size={30} ensImage={ensAvatar} />
+            </div>
+
+            {/* Address Text */}
+            <span className="text-sky-300 group-hover:text-sky-200 transition-colors">
+              {isENS(displayName) ? displayName : checkSumAddress?.slice(0, 6) + "..." + checkSumAddress?.slice(-4)}
+            </span>
+
+            {/* Chevron Icon */}
+            <ChevronDownIcon className="h-4 w-4 text-sky-400 group-hover:text-sky-300 transition-colors" />
           </span>
-          <ChevronDownIcon className="h-6 w-4 ml-2 sm:ml-0" />
         </summary>
+
+        {/* Dropdown Menu */}
         <ul
           tabIndex={0}
-          className="dropdown-content menu z-[2] p-2 mt-2 bg-base-200 rounded-box gap-1 border border-[#252442]"
+          className="dropdown-content menu z-[2] p-3 mt-3 bg-black/95 backdrop-blur-xl border border-sky-500/30 rounded-2xl shadow-xl shadow-sky-500/10 min-w-[240px]"
         >
           <NetworkOptions hidden={!selectingNetwork} />
+
+          {/* Copy Address */}
           <li className={selectingNetwork ? "hidden" : ""}>
             {addressCopied ? (
-              <div className="btn-sm !rounded-xl flex gap-3 py-3">
-                <CheckCircleIcon
-                  className="text-xl font-normal h-6 w-4 cursor-pointer ml-2 sm:ml-0"
-                  aria-hidden="true"
-                />
-                <span className=" whitespace-nowrap">Copy address</span>
+              <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                <CheckCircleIcon className="h-5 w-5 text-sky-400" aria-hidden="true" />
+                <span className="whitespace-nowrap font-medium">Copied!</span>
               </div>
             ) : (
               <CopyToClipboard
@@ -80,55 +96,71 @@ export const AddressInfoDropdown = ({
                   }, 800);
                 }}
               >
-                <div className="btn-sm !rounded-xl flex gap-3 py-3">
-                  <DocumentDuplicateIcon
-                    className="text-xl font-normal h-6 w-4 cursor-pointer ml-2 sm:ml-0"
-                    aria-hidden="true"
-                  />
-                  <span className=" whitespace-nowrap">Copy address</span>
+                <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sky-500/20 text-sky-300 hover:text-sky-200 transition-all cursor-pointer group">
+                  <DocumentDuplicateIcon className="h-5 w-5 text-sky-400 group-hover:text-sky-300" aria-hidden="true" />
+                  <span className="whitespace-nowrap font-medium">Copy address</span>
                 </div>
               </CopyToClipboard>
             )}
           </li>
+
+          {/* View QR Code */}
           <li className={selectingNetwork ? "hidden" : ""}>
-            <label htmlFor="qrcode-modal" className="btn-sm !rounded-xl flex gap-3 py-3">
-              <QrCodeIcon className="h-6 w-4 ml-2 sm:ml-0" />
-              <span className="whitespace-nowrap">View QR Code</span>
+            <label
+              htmlFor="qrcode-modal"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sky-500/20 text-sky-300 hover:text-sky-200 transition-all cursor-pointer group"
+            >
+              <QrCodeIcon className="h-5 w-5 text-sky-400 group-hover:text-sky-300" />
+              <span className="whitespace-nowrap font-medium">View QR Code</span>
             </label>
           </li>
+
+          {/* View on Block Explorer */}
           <li className={selectingNetwork ? "hidden" : ""}>
-            <button className="menu-item btn-sm !rounded-xl flex gap-3 py-3" type="button">
-              <ArrowTopRightOnSquareIcon className="h-6 w-4 ml-2 sm:ml-0" />
+            <button
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sky-500/20 text-sky-300 hover:text-sky-200 transition-all group w-full text-left"
+              type="button"
+            >
+              <ArrowTopRightOnSquareIcon className="h-5 w-5 text-sky-400 group-hover:text-sky-300" />
               <a
                 target="_blank"
                 href={blockExplorerAddressLink}
                 rel="noopener noreferrer"
-                className="whitespace-nowrap"
+                className="whitespace-nowrap font-medium"
               >
-                View on Block Explorer
+                View on Explorer
               </a>
             </button>
           </li>
+
+          {/* Switch Network */}
           {allowedNetworks.length > 1 ? (
             <li className={selectingNetwork ? "hidden" : ""}>
               <button
-                className="btn-sm !rounded-xl flex gap-3 py-3"
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sky-500/20 text-sky-300 hover:text-sky-200 transition-all group w-full text-left"
                 type="button"
                 onClick={() => {
                   setSelectingNetwork(true);
                 }}
               >
-                <ArrowsRightLeftIcon className="h-6 w-4 ml-2 sm:ml-0" /> <span>Switch Network</span>
+                <ArrowsRightLeftIcon className="h-5 w-5 text-sky-400 group-hover:text-sky-300" />
+                <span className="font-medium">Switch Network</span>
               </button>
             </li>
           ) : null}
+
+          {/* Divider */}
+          <div className={selectingNetwork ? "hidden" : "h-px bg-sky-500/20 my-2"}></div>
+
+          {/* Disconnect */}
           <li className={selectingNetwork ? "hidden" : ""}>
             <button
-              className="menu-item text-error btn-sm !rounded-xl flex gap-3 py-3"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-red-500/20 text-red-400 hover:text-red-300 transition-all group w-full text-left border border-transparent hover:border-red-500/30"
               type="button"
               onClick={() => disconnect()}
             >
-              <ArrowLeftOnRectangleIcon className="h-6 w-4 ml-2 sm:ml-0" /> <span>Disconnect</span>
+              <ArrowLeftOnRectangleIcon className="h-5 w-5" />
+              <span className="font-medium">Disconnect</span>
             </button>
           </li>
         </ul>
