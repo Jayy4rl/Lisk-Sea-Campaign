@@ -10,7 +10,7 @@ export const TokenBalance = () => {
   const { data: tokenBalance } = useScaffoldContractRead({
     contractName: "MyToken",
     functionName: "balanceOf",
-    args: [connectedAddress],
+    args: [connectedAddress as `0x${string}` | undefined],
   });
 
   const { data: tokenSymbol } = useScaffoldContractRead({

@@ -9,12 +9,13 @@ import { notification } from "~~/utils/scaffold-eth";
 export const TokenTransfer = () => {
   const { address: connectedAddress } = useAccount();
   const [recipient, setRecipient] = useState("");
+
   const [amount, setAmount] = useState("");
 
   const { writeAsync: writeMyTokenAsync } = useScaffoldContractWrite({
     contractName: "MyToken",
     functionName: "transfer",
-    args: [recipient, parseEther(amount)],
+    args: [recipient as `0x${string}`, parseEther(amount)],
   });
 
   const handleTransfer = async () => {
@@ -25,7 +26,7 @@ export const TokenTransfer = () => {
 
     try {
       await writeMyTokenAsync({
-        args: [recipient, parseEther(amount)],
+        args: [recipient as `0x${string}`, parseEther(amount)],
       });
 
       notification.success("Token transfer successful!");

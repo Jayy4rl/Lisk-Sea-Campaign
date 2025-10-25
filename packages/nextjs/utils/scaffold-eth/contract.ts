@@ -77,9 +77,10 @@ type IsContractDeclarationMissing<TYes, TNo> = typeof contractsData extends { [k
   ? TNo
   : TYes;
 
-type ContractsDeclaration = IsContractDeclarationMissing<GenericContractsDeclaration, typeof contractsData>;
+// Helper type to safely index into contracts by chain ID
+type GetChainContracts<T, K extends number> = T extends { [key in K]: infer C } ? C : never;
 
-type Contracts = ContractsDeclaration[ConfiguredChainId];
+type Contracts = GetChainContracts<typeof deployedContractsData, ConfiguredChainId>;
 
 export type ContractName = keyof Contracts;
 

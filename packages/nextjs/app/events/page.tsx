@@ -241,10 +241,10 @@ const Events: NextPage = () => {
                         className="border-b border-sky-500/10 hover:bg-sky-500/5 transition-colors"
                       >
                         <td className="py-4 px-4">
-                          <Address address={event.args.from} size="sm" />
+                          <Address address={(event.args as any)?.from ?? (event.args as any)?.[0]} size="sm" />
                         </td>
                         <td className="py-4 px-4">
-                          <Address address={event.args.to} size="sm" />
+                          <Address address={(event.args as any)?.to ?? (event.args as any)?.[1]} size="sm" />
                         </td>
                         <td className="py-4 px-4">
                           {eventType === "token" ? (

@@ -10,31 +10,31 @@ export const NFTCollection = () => {
   const { address: connectedAddress } = useAccount();
   const [mintToAddress, setMintToAddress] = useState("");
 
-  const { data: nftName } = useScaffoldContractRead({
+  const { data: nftName } = useScaffoldContractRead<"MyNFT", "name">({
     contractName: "MyNFT",
     functionName: "name",
   });
 
-  const { data: nftSymbol } = useScaffoldContractRead({
+  const { data: nftSymbol } = useScaffoldContractRead<"MyNFT", "symbol">({
     contractName: "MyNFT",
     functionName: "symbol",
   });
 
-  const { data: totalSupply } = useScaffoldContractRead({
+  const { data: totalSupply } = useScaffoldContractRead<"MyNFT", "totalSupply">({
     contractName: "MyNFT",
     functionName: "totalSupply",
   });
 
-  const { data: userBalance } = useScaffoldContractRead({
+  const { data: userBalance } = useScaffoldContractRead<"MyNFT", "balanceOf">({
     contractName: "MyNFT",
     functionName: "balanceOf",
-    args: [connectedAddress],
+    args: [connectedAddress as `0x${string}` | undefined],
   });
 
   const { writeAsync: writeMyNFTAsync } = useScaffoldContractWrite({
     contractName: "MyNFT",
     functionName: "mint",
-    args: [mintToAddress || connectedAddress],
+    args: [(mintToAddress || connectedAddress) as `0x${string}` | undefined],
   });
 
   const handleMint = async () => {
@@ -47,7 +47,7 @@ export const NFTCollection = () => {
 
     try {
       await writeMyNFTAsync({
-        args: [targetAddress],
+        args: [targetAddress as `0x${string}`],
       });
 
       notification.success("NFT minted successfully!");
