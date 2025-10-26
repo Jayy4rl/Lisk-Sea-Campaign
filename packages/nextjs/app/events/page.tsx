@@ -253,7 +253,20 @@ const Events: NextPage = () => {
                             </span>
                           ) : (
                             <span className="inline-flex items-center px-3 py-1 rounded-full bg-sky-500/20 border border-sky-500/30 text-sky-300 text-sm font-medium">
-                              #{event.args[2]?.toString()}
+                              #
+                              {(() => {
+                                // If args is array-like, treat it as readonly unknown[] and read index 2,
+                                // otherwise try common named properties used by different event typings.
+                                const argsArray = Array.isArray(event.args)
+                                  ? (event.args as readonly unknown[])
+                                  : undefined;
+                                const idFromArray = argsArray ? argsArray[2] : undefined;
+                                const argsObj = !argsArray
+                                  ? (event.args as { tokenId?: bigint; id?: bigint; value?: bigint } | undefined)
+                                  : undefined;
+                                const id = idFromArray ?? argsObj?.tokenId ?? argsObj?.id ?? argsObj?.value;
+                                return id !== undefined ? String(id) : "";
+                              })()}
                             </span>
                           )}
                         </td>
